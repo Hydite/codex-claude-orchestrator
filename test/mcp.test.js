@@ -28,6 +28,9 @@ test("MCP stdio server exposes tools and dashboard resource", async () => {
     assert.equal(resources.resources[0].uri, "ui://codex-claude-orchestrator/dashboard-v2.html");
     const resource = await client.readResource({ uri: resources.resources[0].uri });
     assert.match(resource.contents[0].text, /Codex × Claude Control Plane/);
+    const legacyResource = await client.readResource({ uri: "ui://codex-claude-orchestrator/dashboard-v1.html" });
+    assert.equal(legacyResource.contents[0].uri, "ui://codex-claude-orchestrator/dashboard-v1.html");
+    assert.match(legacyResource.contents[0].text, /Codex × Claude Control Plane/);
     const dashboard = await client.callTool({ name: "orchestrator_open_dashboard", arguments: {} });
     assert.equal(dashboard._meta["ui.resourceUri"], "ui://codex-claude-orchestrator/dashboard-v2.html");
   } finally {

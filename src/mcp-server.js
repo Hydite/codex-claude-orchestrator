@@ -2,12 +2,13 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { loadConfig } from "./config.js";
 import { Orchestrator } from "./orchestrator.js";
-import { tools, WIDGET_URI } from "./tool-definitions.js";
+import { LEGACY_WIDGET_URIS, tools, WIDGET_URI } from "./tool-definitions.js";
 
 const pluginRoot = process.cwd();
 const widgetPath = path.resolve(pluginRoot, "src/ui/widget.html");
 let config = await loadConfig(process.env.CODEX_WORKSPACE_ROOT || pluginRoot);
 let orchestrator = new Orchestrator(config);
+const supportedWidgetUris = new Set([WIDGET_URI, ...LEGACY_WIDGET_URIS]);
 
 async function callTool(name, args = {}) {
   if (name === "orchestrator_set_workspace") {
@@ -47,7 +48,7 @@ async function handleRequest(request) {
     return {
       protocolVersion: request.params?.protocolVersion || "2025-06-18",
       capabilities: { tools: { listChanged: false }, resources: { subscribe: false, listChanged: false } },
-      serverInfo: { name: "codex-claude-orchestrator", version: "0.3.1" }
+      serverInfo: { name: "codex-claude-orchestrator", version: "0.3.2" }
     };
   }
   if (request.method === "ping") return {};
@@ -56,10 +57,11 @@ async function handleRequest(request) {
     return { resources: [{ uri: WIDGET_URI, name: "Hybrid Team Control Plane", description: "React control plane for the live Codex × Claude team", mimeType: "text/html;profile=mcp-app" }] };
   }
   if (request.method === "resources/read") {
-    if (request.params?.uri !== WIDGET_URI) throw Object.assign(new Error("Unknown resource"), { code: -32002 });
+    const requestedUri = request.params?.uri;
+    if (!supportedWidgetUris.has(requestedUri)) throw Object.assign(new Error("Unknown resource"), { code: -32002 });
     return {
       contents: [{
-        uri: WIDGET_URI,
+        uri: requestedUri,
         mimeType: "text/html;profile=mcp-app",
         text: await fs.readFile(widgetPath, "utf8"),
         _meta: {

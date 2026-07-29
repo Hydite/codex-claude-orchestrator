@@ -1,6 +1,7 @@
 import { AGENTS, EXECUTION_MODES, HANDOFF_REASONS, NODE_STATUSES } from "./schema.js";
 
 export const WIDGET_URI = "ui://codex-claude-orchestrator/dashboard-v2.html";
+export const LEGACY_WIDGET_URIS = ["ui://codex-claude-orchestrator/dashboard-v1.html"];
 
 const stringArray = { type: "array", items: { type: "string" } };
 const constraintProperties = {

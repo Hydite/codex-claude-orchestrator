@@ -25,11 +25,11 @@ test("personal installer preserves marketplace metadata and supports update/unin
   let status = await personalStatus({ home });
   assert.equal(status.installed, true);
   assert.equal(status.listed, true);
-  assert.equal(status.version, "0.3.1");
+  assert.equal(status.version, "0.3.2");
 
   await installPersonal({ repoRoot, home, register: false, update: true });
   status = await personalStatus({ home });
-  assert.match(status.version, /^0\.3\.1\+codex\.local-/);
+  assert.match(status.version, /^0\.3\.2\+codex\.local-/);
 
   await uninstallPersonal({ home, register: false });
   status = await personalStatus({ home });
