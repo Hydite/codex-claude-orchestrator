@@ -4,6 +4,7 @@ import { spawn, execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { git, gitOrThrow, currentCommit } from "./git.js";
 import { now } from "./schema.js";
+import { resolveClaudeEnvironment } from "./claude-environment.js";
 const exec = promisify(execFile);
 
 export function findClaudeProcessError(output) {
@@ -26,18 +27,20 @@ export class ClaudeRuntime {
 
   async detect() {
     const command = this.config.claudeCommand;
+    const resolved = await resolveClaudeEnvironment(this.config);
     try {
-      const result = await exec(command, ["--version"], { cwd: this.config.cwd, timeout: 10000 });
+      const result = await exec(command, ["--version"], { cwd: this.config.cwd, timeout: 10000, env: resolved.environment });
       let auth = { loggedIn: null };
       try {
-        const authResult = await exec(command, ["auth", "status", "--json"], { cwd: this.config.cwd, timeout: 10000 });
+        const authResult = await exec(command, ["auth", "status", "--json"], { cwd: this.config.cwd, timeout: 10000, env: resolved.environment });
         auth = JSON.parse(authResult.stdout);
       } catch (error) {
         auth = { loggedIn: false, error: `${error.stderr || error.message}`.trim() };
       }
-      return { installed: true, connected: auth.loggedIn === true, command, version: `${result.stdout}${result.stderr}`.trim(), auth, mode: "cli" };
+      const effectiveProvider = resolved.info.gatewayReady ? "gateway" : auth.loggedIn === true ? "oauth" : "none";
+      return { installed: true, connected: resolved.info.gatewayReady || auth.loggedIn === true, command, version: `${result.stdout}${result.stderr}`.trim(), auth, gateway: resolved.info, effectiveProvider, mode: "cli" };
     } catch (error) {
-      return { installed: false, connected: false, command, version: null, error: error.message, mode: "cli" };
+      return { installed: false, connected: false, command, version: null, gateway: resolved.info, error: error.message, mode: "cli" };
     }
   }
 
@@ -53,7 +56,8 @@ export class ClaudeRuntime {
     const status = await this.detect();
     if (!status.installed || !status.connected) return { ...status, probe: { ok: false, error: "Claude CLI 未安装或未登录" } };
     try {
-      const child = spawn(this.config.claudeCommand, ["-p", "Reply with exactly OK", "--output-format", "json", "--tools", "", "--max-budget-usd", "0.02", "--no-session-persistence"], { cwd: this.config.cwd, stdio: ["ignore", "pipe", "pipe"] });
+      const resolved = await resolveClaudeEnvironment(this.config);
+      const child = spawn(this.config.claudeCommand, ["-p", "Reply with exactly OK", "--output-format", "json", "--tools", "", "--max-budget-usd", "0.02", "--no-session-persistence"], { cwd: this.config.cwd, env: resolved.environment, stdio: ["ignore", "pipe", "pipe"] });
       let stdout = "", stderr = "";
       child.stdout.on("data", (chunk) => { stdout += chunk; }); child.stderr.on("data", (chunk) => { stderr += chunk; });
       const code = await new Promise((resolve, reject) => { const timer = setTimeout(() => { child.kill("SIGTERM"); reject(new Error("Claude 探测超时")); }, 60000); child.on("error", reject); child.on("close", (value) => { clearTimeout(timer); resolve(value ?? 1); }); });
@@ -70,7 +74,8 @@ export class ClaudeRuntime {
     if (!Array.isArray(this.config.serviceCommand) || !this.config.serviceCommand.length) return { started: false, reason: "未配置 serviceCommand" };
     if (this.serviceStarted) return { started: false, reason: "服务已由当前编排器拉起" };
     const [command, ...args] = this.config.serviceCommand;
-    const child = spawn(command, args, { cwd: this.config.cwd, detached: true, stdio: "ignore" });
+    const resolved = await resolveClaudeEnvironment(this.config);
+    const child = spawn(command, args, { cwd: this.config.cwd, env: resolved.environment, detached: true, stdio: "ignore" });
     child.unref();
     this.serviceStarted = true;
     await this.store.event("claude.service.started", { command, args });
@@ -117,7 +122,8 @@ export class ClaudeRuntime {
       ,"不要执行 git merge、rebase 或 push；编排器会在验证通过后创建节点提交并由 Codex 合并。"
     ].filter(Boolean).join("\n");
     const args = this.buildArgs(prompt, node);
-    const child = spawn(this.config.claudeCommand, args, { cwd: work.worktree, stdio: ["ignore", "pipe", "pipe"] });
+    const resolved = await resolveClaudeEnvironment(this.config);
+    const child = spawn(this.config.claudeCommand, args, { cwd: work.worktree, env: resolved.environment, stdio: ["ignore", "pipe", "pipe"] });
     this.processes.set(node.id, child);
     await this.store.event("node.started", { taskId: task.id, nodeId: node.id, worktree: work.worktree, branch: work.branch, baseCommit: work.baseCommit, command: this.config.claudeCommand, args: ["...", "{prompt}"], claude: status });
     let output = "";

@@ -1,6 +1,8 @@
 {
   "claudeCommand": "claude",
   "claudeArgs": ["-p", "{prompt}", "--output-format", "stream-json", "--verbose", "--include-partial-messages", "--permission-mode", "auto", "--no-session-persistence"],
+  "claudeEnvironmentSource": "auto",
+  "claudeSettingsPath": "~/.claude/settings.json",
   "autoStartClaude": true,
   "autoStartService": false,
   "serviceCommand": null,

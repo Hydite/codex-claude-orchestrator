@@ -25,11 +25,11 @@ test("personal installer preserves marketplace metadata and supports update/unin
   let status = await personalStatus({ home });
   assert.equal(status.installed, true);
   assert.equal(status.listed, true);
-  assert.equal(status.version, "0.2.0");
+  assert.equal(status.version, "0.2.1");
 
   await installPersonal({ repoRoot, home, register: false, update: true });
   status = await personalStatus({ home });
-  assert.match(status.version, /^0\.2\.0\+codex\.local-/);
+  assert.match(status.version, /^0\.2\.1\+codex\.local-/);
 
   await uninstallPersonal({ home, register: false });
   status = await personalStatus({ home });
@@ -38,4 +38,3 @@ test("personal installer preserves marketplace metadata and supports update/unin
   marketplace = await readJson(marketplaceFile);
   assert.deepEqual(marketplace.plugins.map((plugin) => plugin.name), ["existing"]);
 });
-

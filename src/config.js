@@ -4,6 +4,8 @@ import path from "node:path";
 export const DEFAULT_CONFIG = {
   claudeCommand: "claude",
   claudeArgs: ["-p", "{prompt}", "--output-format", "stream-json", "--verbose", "--include-partial-messages", "--permission-mode", "auto", "--no-session-persistence"],
+  claudeEnvironmentSource: "auto",
+  claudeSettingsPath: "~/.claude/settings.json",
   autoStartClaude: true,
   autoStartService: false,
   serviceCommand: null,
@@ -19,6 +21,8 @@ export function validateConfig(config) {
   const errors = [];
   if (typeof config.claudeCommand !== "string" || !config.claudeCommand.trim()) errors.push("claudeCommand 必须是非空字符串");
   if (!Array.isArray(config.claudeArgs) || !config.claudeArgs.every((arg) => typeof arg === "string") || !config.claudeArgs.some((arg) => arg.includes("{prompt}"))) errors.push("claudeArgs 必须是字符串数组且包含 {prompt}");
+  if (!["auto", "settings", "process"].includes(config.claudeEnvironmentSource)) errors.push("claudeEnvironmentSource 必须是 auto、settings 或 process");
+  if (typeof config.claudeSettingsPath !== "string" || !config.claudeSettingsPath.trim()) errors.push("claudeSettingsPath 必须是非空字符串");
   if (!Array.isArray(config.validationCommands) || !config.validationCommands.every((command) => typeof command === "string" && command.trim())) errors.push("validationCommands 必须是非空字符串数组");
   if (!Number.isInteger(config.maxConcurrentNodes) || config.maxConcurrentNodes < 1 || config.maxConcurrentNodes > 16) errors.push("maxConcurrentNodes 必须是 1-16 的整数");
   if (!Number.isInteger(config.taskTimeoutMs) || config.taskTimeoutMs < 1000) errors.push("taskTimeoutMs 必须是不小于 1000 的整数");

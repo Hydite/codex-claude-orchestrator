@@ -80,6 +80,23 @@ Claude Code 通常按任务启动，不要求常驻服务。如果本机包装�
 
 编排器会在首次派发节点前启动它。命令来自本地配置，视为用户信任的本地代码。
 
+## Claude Gateway
+
+默认的 `claudeEnvironmentSource: "auto"` 会读取 `~/.claude/settings.json` 中经过白名单限制的 Gateway 环境变量。如果其中同时存在 `ANTHROPIC_BASE_URL` 和凭证，编排器会清除插件进程继承的竞争性 Anthropic 凭证，并让检测、API 探测、服务启动和所有 Claude 节点统一走 Gateway。
+
+插件只在内存中向 Claude 子进程传递这些值，不会把 Token 写入项目状态、事件或日志。`claude_status` 会返回脱敏后的 `effectiveProvider`、配置来源、变量名和 Gateway Origin。
+
+如需强制来源，可在 `.codex-claude.json` 中设置：
+
+```json
+{
+  "claudeEnvironmentSource": "settings",
+  "claudeSettingsPath": "~/.claude/settings.json"
+}
+```
+
+设为 `process` 则只使用 Codex 插件进程继承的环境变量。
+
 ## License
 
 MIT

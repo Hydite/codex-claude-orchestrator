@@ -8,7 +8,7 @@ const action = process.argv[2] || "install";
 const homeIndex = process.argv.indexOf("--home");
 const home = homeIndex >= 0 ? path.resolve(process.argv[homeIndex + 1]) : os.homedir();
 const options = { home };
-const preflight = installationPreflight();
+const preflight = await installationPreflight();
 let result;
 
 if (action === "install") {

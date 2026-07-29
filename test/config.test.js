@@ -25,3 +25,9 @@ test("loadConfig rejects unsafe state paths and invalid concurrency", async () =
   await fs.writeFile(path.join(cwd, ".codex-claude.json"), JSON.stringify({ stateFile: "../state.json", maxConcurrentNodes: 0 }));
   await assert.rejects(loadConfig(cwd), /配置无效/);
 });
+
+test("loadConfig rejects unknown Claude environment source", async () => {
+  const cwd = await fs.mkdtemp(path.join(os.tmpdir(), "cco-config-"));
+  await fs.writeFile(path.join(cwd, ".codex-claude.json"), JSON.stringify({ claudeEnvironmentSource: "oauth-only" }));
+  await assert.rejects(loadConfig(cwd), /claudeEnvironmentSource/);
+});

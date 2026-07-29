@@ -8,6 +8,7 @@ Claude CLI inherits the local user's permissions and the configured workspace. T
 - Merge is a separate destructive tool and requires `review` state.
 - Logs and state may contain prompts, filenames, and tool output; they remain under `.codex-claude/` and are gitignored.
 - No telemetry or remote service is included. Network access is determined by Codex and Claude CLI configuration.
+- Gateway credentials are read from the configured Claude settings file only through an explicit allowlist and are passed directly to child processes in memory. Credential values are never returned by MCP tools, persisted in orchestration state, or written to logs.
+- When a complete settings-based Gateway configuration is selected, competing inherited Anthropic credential variables are removed before the Claude process starts. Status output includes only the source, configured variable names, readiness flags, and sanitized URL origin.
 
 Report vulnerabilities privately to the repository owner before public disclosure.
-

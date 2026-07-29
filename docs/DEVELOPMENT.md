@@ -12,6 +12,7 @@
 - Node.js 20+ and ESM only.
 - MCP tool inputs must use explicit JSON Schema. Mutating tools must have accurate annotations.
 - Never build a shell command from model-provided input. Claude is invoked with `spawn(command, args)`.
+- Never log, persist, or return Claude Gateway credential values. Environment-source changes require redaction and precedence tests.
 - Persist mutations through `StateStore.update`; do not write the state file from other modules.
 - Every lifecycle transition must emit a structured event.
 - A successful process exit is not acceptance. Scope, overlap, regression, and human/Codex review are all required.

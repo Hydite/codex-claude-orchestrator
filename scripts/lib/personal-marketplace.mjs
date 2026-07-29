@@ -37,7 +37,7 @@ function runCodex(args, { home, codexBin = "codex" }) {
 }
 
 export async function installPersonal({ repoRoot, home = os.homedir(), register = true, update = false, codexBin = "codex" }) {
-  const preflight = installationPreflight({ codexBin });
+  const preflight = await installationPreflight({ codexBin });
   const paths = personalPaths(home);
   await fs.mkdir(path.dirname(paths.pluginRoot), { recursive: true });
   await fs.mkdir(path.join(paths.home, ".codex"), { recursive: true });

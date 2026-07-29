@@ -10,7 +10,7 @@ const home = homeIndex >= 0 ? path.resolve(process.argv[homeIndex + 1]) : os.hom
 const marketplaceIndex = process.argv.indexOf("--marketplace");
 const requestedMarketplace = marketplaceIndex >= 0 ? process.argv[marketplaceIndex + 1] : null;
 const options = { home };
-const preflight = installationPreflight();
+const preflight = await installationPreflight();
 const inventory = await runCodexJson(["plugin", "list", "--available"], options);
 const all = [...(inventory.installed || []), ...(inventory.available || [])];
 const candidate = all.find((item) => item.name === PLUGIN_NAME && (!requestedMarketplace || item.marketplaceName === requestedMarketplace) && /openai.*curated|curated.*openai/i.test(item.marketplaceName || ""));

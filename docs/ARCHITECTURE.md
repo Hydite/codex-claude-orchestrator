@@ -9,7 +9,7 @@ Codex is the coordinator, reviewer, and final integrator. Claude CLI is an execu
 1. **Codex native plugin manifest** discovers the skill and local MCP server.
 2. **MCP server** exposes status, workspace binding, task graph, node dispatch, validation, progress, stop, and merge tools.
 3. **Orchestrator core** owns task goals, agents, dependencies, file reservations, lifecycle rules, and event persistence.
-4. **Claude runtime** detects the CLI, optionally starts a configured service, creates a branch/worktree, streams process output, and records completion.
+4. **Claude runtime** resolves the effective Gateway environment, detects the CLI, optionally starts a configured service, creates a branch/worktree, streams process output, and records completion.
 5. **Regression gate** executes configured validation commands, compares changed files with the node allowlist, and checks overlap with active/review nodes.
 6. **MCP App dashboard** polls the authoritative state and renders tasks, nodes, events, availability, failures, and review queues.
 7. **Distribution layer** builds dependency-free plugin bundles for the personal marketplace, Hydite Git marketplace, and OpenAI curated submission layout.
@@ -22,7 +22,7 @@ Dispatch follows this sequence:
 
 1. verify node dependencies and concurrency limit;
 2. reserve its file allowlist;
-3. detect Claude CLI and optionally launch the configured service command;
+3. resolve the allowlisted Claude Gateway environment, detect Claude CLI, and optionally launch the configured service command;
 4. create a branch and isolated Git worktree at the current commit;
 5. spawn Claude with a goal, structured node input, constraints, and file scope;
 6. stream events and logs;

@@ -83,8 +83,8 @@ npm run check
 npm test
 npm run build:marketplace
 npm run build:official
-git tag v0.2.0
-git push origin v0.2.0
+git tag v0.2.1
+git push origin v0.2.1
 ```
 
 ## Security notes
