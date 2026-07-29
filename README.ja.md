@@ -2,7 +2,7 @@
 
 Codex のメインスレッド、ネイティブ Codex subagent、Claude CLI を、回帰ゲート・隔離 worktree・安全な引き継ぎを備えた並列開発チームにします。Codex は司令塔であると同時に開発者でもあり、能力、リスク、依存関係、ファイル境界に基づいて役割を動的に割り当てます。
 
-[简体中文](README.md) · [English](README.en.md) · [한국어](README.ko.md) · [リリース](https://github.com/Hydite/codex-claude-orchestrator/releases)
+[English](README.md) · [简体中文](README.zh-CN.md) · [한국어](README.ko.md) · [リリース](https://github.com/Hydite/codex-claude-orchestrator/releases)
 
 ## 目次
 

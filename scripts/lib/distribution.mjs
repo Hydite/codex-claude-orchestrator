@@ -17,7 +17,7 @@ const COPY_ENTRIES = [
   "src",
   "LICENSE",
   "README.md",
-  "README.en.md",
+  "README.zh-CN.md",
   "README.ja.md",
   "README.ko.md"
 ];

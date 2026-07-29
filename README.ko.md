@@ -2,7 +2,7 @@
 
 Codex 메인 스레드, 네이티브 Codex subagent, Claude CLI를 회귀 게이트, 격리 worktree, 안전한 인계를 갖춘 병렬 개발 팀으로 구성합니다. Codex는 지휘자이자 개발자이며 능력, 위험, 의존성, 파일 경계를 기준으로 역할을 동적으로 배정합니다.
 
-[简体中文](README.md) · [English](README.en.md) · [日本語](README.ja.md) · [릴리스](https://github.com/Hydite/codex-claude-orchestrator/releases)
+[English](README.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [릴리스](https://github.com/Hydite/codex-claude-orchestrator/releases)
 
 ## 목차
 
