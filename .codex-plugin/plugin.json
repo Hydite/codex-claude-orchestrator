@@ -1,9 +1,10 @@
 {
   "name": "codex-claude-orchestrator",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "让 Codex 编排 Claude CLI 并行执行任务，在隔离 worktree 中协作、回归和安全合并。",
   "author": {
     "name": "Hydite",
+    "email": "hydite@users.noreply.github.com",
     "url": "https://github.com/Hydite"
   },
   "homepage": "https://github.com/Hydite/codex-claude-orchestrator",
@@ -20,6 +21,8 @@
     "category": "Developer Tools",
     "capabilities": ["Interactive", "Read", "Write"],
     "websiteURL": "https://github.com/Hydite/codex-claude-orchestrator",
+    "privacyPolicyURL": "https://github.com/Hydite/codex-claude-orchestrator/blob/dev/docs/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/Hydite/codex-claude-orchestrator/blob/dev/docs/TERMS.md",
     "defaultPrompt": [
       "检查 Claude CLI 状态并创建一个并行开发任务",
       "把当前目标拆成可安全并行的 Claude 节点",

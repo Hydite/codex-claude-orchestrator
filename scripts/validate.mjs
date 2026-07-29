@@ -6,7 +6,9 @@ const root = process.cwd();
 const required = [
   ".codex-plugin/plugin.json", ".mcp.json", "package.json",
   "skills/codex-claude-orchestrator/SKILL.md", "src/mcp-server.js",
-  "src/orchestrator.js", "src/ui/widget.html", "assets/logo.svg", "README.md", "docs/DEVELOPMENT.md"
+  "src/orchestrator.js", "src/ui/widget.html", "assets/logo.svg", "README.md", "docs/DEVELOPMENT.md",
+  "docs/INSTALLATION.md", "scripts/install-personal.mjs", "scripts/install-marketplace.mjs",
+  "scripts/install-official.mjs", "scripts/build-marketplace.mjs"
 ];
 const errors = [];
 for (const file of required) {
@@ -22,8 +24,21 @@ const pkg = JSON.parse(await fs.readFile(path.join(root, "package.json"), "utf8"
 if (plugin.name !== "codex-claude-orchestrator") errors.push("插件名必须为 codex-claude-orchestrator");
 if (plugin.version !== pkg.version) errors.push("plugin.json 与 package.json 版本不一致");
 if (!/^\d+\.\d+\.\d+/.test(plugin.version)) errors.push("插件版本不是 semver");
+const serverSource = await fs.readFile(path.join(root, "src/mcp-server.js"), "utf8");
+if (!serverSource.includes(`version: "${plugin.version}"`)) errors.push("MCP serverInfo 版本与 plugin.json 不一致");
 
-for (const file of ["src/mcp-server.js", "src/orchestrator.js", "src/claude-runtime.js", "src/state-store.js"]) {
+async function collectScripts(directory) {
+  const files = [];
+  for (const entry of await fs.readdir(directory, { withFileTypes: true })) {
+    const absolute = path.join(directory, entry.name);
+    if (entry.isDirectory()) files.push(...await collectScripts(absolute));
+    else if (entry.name.endsWith(".mjs")) files.push(path.relative(root, absolute));
+  }
+  return files;
+}
+
+const syntaxFiles = ["src/mcp-server.js", "src/orchestrator.js", "src/claude-runtime.js", "src/state-store.js", ...await collectScripts(path.join(root, "scripts"))];
+for (const file of syntaxFiles) {
   const check = spawnSync(process.execPath, ["--check", path.join(root, file)], { encoding: "utf8" });
   if (check.status !== 0) errors.push(`${file} 语法检查失败: ${check.stderr}`);
 }

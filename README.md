@@ -23,6 +23,28 @@
 - 已安装并登录的 Claude CLI：`claude --version`
 - 支持本地 MCP 插件的 Codex 客户端
 
+## 安装
+
+个人市场安装：
+
+```bash
+npm run install:personal
+```
+
+Hydite Git 市场安装：
+
+```bash
+npm run install:marketplace
+```
+
+OpenAI 官方市场提交包：
+
+```bash
+npm run build:official
+```
+
+OpenAI 官方市场真正收录需要 OpenAI 审核；收录后可运行 `npm run install:official`。完整的安装、更新、卸载与发布说明见 [`docs/INSTALLATION.md`](./docs/INSTALLATION.md)。
+
 ## 本地开发
 
 ```bash
@@ -32,7 +54,7 @@ npm run check
 npm test
 ```
 
-插件由 `.codex-plugin/plugin.json`、技能目录与 `.mcp.json` 组成。安装到 Codex 后，新建一个任务以加载最新工具。公开市场安装方式将在发布策略确定后补充；当前仓库可作为本地插件源开发和验证。
+插件由 `.codex-plugin/plugin.json`、技能目录与 `.mcp.json` 组成。安装或更新后请新建 Codex 任务，以加载最新技能和工具。
 
 ## 使用流程
 

@@ -37,7 +37,7 @@ async function handleRequest(request) {
     return {
       protocolVersion: request.params?.protocolVersion || "2025-06-18",
       capabilities: { tools: { listChanged: false }, resources: { subscribe: false, listChanged: false } },
-      serverInfo: { name: "codex-claude-orchestrator", version: "0.1.0" }
+      serverInfo: { name: "codex-claude-orchestrator", version: "0.2.0" }
     };
   }
   if (request.method === "ping") return {};

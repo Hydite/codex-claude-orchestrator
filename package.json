@@ -1,6 +1,6 @@
 {
   "name": "codex-claude-orchestrator",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "description": "Native Codex plugin that orchestrates Codex and Claude CLI in isolated worktrees.",
@@ -10,7 +10,16 @@
     "start": "node src/mcp-server.js",
     "test": "node --test --test-concurrency=1",
     "check": "node scripts/validate.mjs",
-    "setup": "node scripts/setup.mjs"
+    "setup": "node scripts/setup.mjs",
+    "build:marketplace": "node scripts/build-marketplace.mjs",
+    "build:official": "node scripts/build-marketplace.mjs --mode official --output dist/openai-submission",
+    "install:personal": "node scripts/install-personal.mjs install",
+    "update:personal": "node scripts/install-personal.mjs update",
+    "uninstall:personal": "node scripts/install-personal.mjs uninstall",
+    "install:marketplace": "node scripts/install-marketplace.mjs install",
+    "update:marketplace": "node scripts/install-marketplace.mjs update",
+    "uninstall:marketplace": "node scripts/install-marketplace.mjs uninstall",
+    "install:official": "node scripts/install-official.mjs install"
   },
   "devDependencies": {
     "@modelcontextprotocol/sdk": "^1.17.0"

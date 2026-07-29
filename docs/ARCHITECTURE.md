@@ -12,6 +12,7 @@ Codex is the coordinator, reviewer, and final integrator. Claude CLI is an execu
 4. **Claude runtime** detects the CLI, optionally starts a configured service, creates a branch/worktree, streams process output, and records completion.
 5. **Regression gate** executes configured validation commands, compares changed files with the node allowlist, and checks overlap with active/review nodes.
 6. **MCP App dashboard** polls the authoritative state and renders tasks, nodes, events, availability, failures, and review queues.
+7. **Distribution layer** builds dependency-free plugin bundles for the personal marketplace, Hydite Git marketplace, and OpenAI curated submission layout.
 
 ## State and data flow
 
@@ -33,3 +34,6 @@ Dispatch follows this sequence:
 
 The dashboard is registered as an MCP Apps resource using `text/html;profile=mcp-app` and attached to state/render tools through `_meta.ui.resourceUri`. Codex clients that support MCP App rendering can show it in the interactive visualization surface. The same tool surface remains usable without the widget.
 
+## Distribution boundary
+
+Source, tests, and release automation live in the development repository. Installers copy only the manifest, MCP definition, runtime source, skills, assets, user documentation, configuration example, and license. The installable runtime therefore has no third-party package requirement. Personal marketplace writes are atomic and preserve unrelated entries. Git marketplace releases are generated into the standard `.agents/plugins/marketplace.json` plus `plugins/<name>/` layout.

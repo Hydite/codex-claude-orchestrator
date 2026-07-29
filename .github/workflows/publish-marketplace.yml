@@ -1,0 +1,45 @@
+name: publish-marketplace
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run build:marketplace
+      - run: npm run build:official
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openai-marketplace-submission
+          path: dist/openai-submission
+          include-hidden-files: true
+          retention-days: 30
+      - name: Publish installable marketplace branch
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git worktree add --detach /tmp/marketplace-publish
+          cd /tmp/marketplace-publish
+          git switch --orphan marketplace-build
+          git rm -rf . || true
+          cp -R "$GITHUB_WORKSPACE/dist/marketplace/." .
+          git add .
+          git commit -m "release: marketplace ${GITHUB_REF_NAME}"
+          git push origin HEAD:marketplace --force

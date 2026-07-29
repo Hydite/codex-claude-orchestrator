@@ -35,3 +35,11 @@ Changes to MCP wiring require a stdio handshake smoke test. Changes to the dashb
 
 Keep `.codex-plugin/plugin.json` and `package.json` versions identical. Use semantic versioning, document breaking configuration changes, validate the plugin scaffold, and install into a new Codex task when testing updated plugin tools.
 
+Before a release, build both distribution channels and validate the generated marketplace with Codex CLI:
+
+```bash
+npm run build:marketplace
+npm run build:official
+```
+
+Never hand-edit generated `dist/` files or the `marketplace` branch. Change source files or distribution scripts, run the tests, and regenerate.

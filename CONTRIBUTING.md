@@ -11,7 +11,6 @@ npm test
 git diff --check
 ```
 
-Changes affecting node dispatch, Git operations, command execution, MCP schemas, or merge behavior require a regression test. Dashboard changes require a refreshed `assets/dashboard-preview.png` and visual inspection.
+Changes affecting node dispatch, Git operations, command execution, MCP schemas, merge behavior, installation, or marketplace generation require a regression test. Dashboard changes require a refreshed `assets/dashboard-preview.png` and visual inspection.
 
 The full engineering contract is in `docs/DEVELOPMENT.md`; security expectations are in `docs/SECURITY.md`.
-

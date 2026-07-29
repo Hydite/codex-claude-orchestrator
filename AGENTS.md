@@ -20,4 +20,5 @@ These rules apply to every automated agent working in this repository.
 - A Claude node cannot merge while the Codex worktree is dirty or when file scope, base overlap, or regression checks fail.
 - MCP tool annotations and schemas must match their real side effects.
 - Every new lifecycle transition emits a structured event and has test coverage.
-
+- Personal marketplace updates must preserve unrelated entries and use atomic writes.
+- Generated marketplace trees must use `.agents/plugins/marketplace.json` and `plugins/<name>/`; never edit the generated `marketplace` branch directly.
