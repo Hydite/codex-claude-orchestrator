@@ -1,0 +1,13 @@
+{
+  "claudeCommand": "claude",
+  "claudeArgs": ["-p", "{prompt}", "--output-format", "stream-json"],
+  "autoStartClaude": true,
+  "autoStartService": false,
+  "serviceCommand": null,
+  "worktreeRoot": ".codex-claude/worktrees",
+  "stateFile": ".codex-claude/state.json",
+  "validationCommands": ["git diff --check"],
+  "maxConcurrentNodes": 2,
+  "taskTimeoutMs": 3600000
+}
+

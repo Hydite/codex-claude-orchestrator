@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Codex × Claude Orchestrator</title>
+  <style>
+    :root { color-scheme: light dark; --bg:#111318; --card:#1b1e27; --line:#303542; --text:#f4f5f7; --muted:#9ba3b4; --accent:#d97757; --green:#47c883; --warn:#f4bc5b; --red:#f36b73; }
+    * { box-sizing:border-box } body { margin:0; padding:18px; background:var(--bg); color:var(--text); font:13px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; } header { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:16px; } h1 { font-size:18px; margin:0; } button { border:1px solid var(--line); background:#252a35; color:var(--text); border-radius:7px; padding:7px 10px; cursor:pointer; } button:hover { border-color:var(--accent) } .pill { border-radius:999px; padding:3px 8px; background:#252a35; color:var(--muted); } .grid { display:grid; gap:12px; } .summary { grid-template-columns:repeat(4,minmax(0,1fr)); } .card { border:1px solid var(--line); border-radius:10px; background:var(--card); padding:12px; } .label { color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:.05em; } .value { font-size:20px; font-weight:650; margin-top:2px; } .task { margin-top:12px; } .task-head { display:flex; justify-content:space-between; gap:8px; } .node { display:grid; grid-template-columns:130px 1fr auto; gap:8px; align-items:center; padding:9px 0; border-top:1px solid var(--line); } .node:first-child { margin-top:10px; } .muted { color:var(--muted); } .status-running { color:var(--accent) } .status-review,.status-passed,.status-merged { color:var(--green) } .status-blocked,.status-failed { color:var(--red) } pre { max-height:220px; overflow:auto; white-space:pre-wrap; color:#c7cedd; background:#101217; border-radius:7px; padding:10px; } @media (max-width:700px) { .summary { grid-template-columns:repeat(2,minmax(0,1fr)); } .node { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <header><div><h1>Codex × Claude Orchestrator</h1><div class="muted">隔离 worktree · 实时回归 · 安全合并</div></div><div><span id="claude" class="pill">检测中…</span> <button id="refresh">刷新</button></div></header>
+  <div class="grid summary"><div class="card"><div class="label">任务</div><div id="tasks" class="value">0</div></div><div class="card"><div class="label">运行节点</div><div id="running" class="value">0</div></div><div class="card"><div class="label">待审查</div><div id="review" class="value">0</div></div><div class="card"><div class="label">冲突/失败</div><div id="blocked" class="value">0</div></div></div>
+  <div id="content" class="grid"></div>
+  <div class="card task"><div class="label">最近事件</div><pre id="events">暂无事件</pre></div>
+  <script>
+    const call = async (name, args={}) => { if (window.openai?.callTool) return window.openai.callTool(name,args); const bridge = window.parent; bridge.postMessage({type:'codex-claude:call-tool',name,args},'*'); return null; };
+    const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    function render(state) { const tasks=Object.values(state.tasks||{}), nodes=tasks.flatMap(t=>t.nodes||[]); document.querySelector('#tasks').textContent=tasks.length; document.querySelector('#running').textContent=nodes.filter(n=>n.status==='running').length; document.querySelector('#review').textContent=nodes.filter(n=>n.status==='review').length; document.querySelector('#blocked').textContent=nodes.filter(n=>['blocked','failed'].includes(n.status)).length; document.querySelector('#content').innerHTML=tasks.length?tasks.map(t=>`<section class="card task"><div class="task-head"><div><strong>${esc(t.title)}</strong><div class="muted">${esc(t.goal)}</div></div><span class="pill">${esc(t.status)}</span></div>${(t.nodes||[]).map(n=>`<div class="node"><div><strong>${esc(n.title)}</strong><div class="muted">${esc(n.agent)} · ${esc(n.id)}</div></div><div class="muted">${esc(n.goal)}<br>${n.files?.length?esc(n.files.join(', ')):'未限定文件范围'}</div><span class="status-${esc(n.status)}">${esc(n.status)}</span></div>`).join('')}</section>`).join(''):'<section class="card task muted">还没有任务。让 Codex 调用 orchestrator_create_task 创建目标和节点。</section>'; document.querySelector('#events').textContent=(state.events||[]).slice(-18).reverse().map(e=>`[${e.at}] ${e.type} ${JSON.stringify(e)}`).join('\n')||'暂无事件'; }
+    async function refresh() { const result=await call('orchestrator_get_state'); if(result?.structuredContent) render(result.structuredContent); const status=await call('claude_status'); const s=status?.structuredContent||status; if(s?.claude) document.querySelector('#claude').textContent=s.claude.installed?`Claude ${s.claude.version||'ready'}`:'Claude 未安装'; }
+    document.querySelector('#refresh').addEventListener('click', refresh); refresh(); setInterval(refresh, 1800);
+  </script>
+</body>
+</html>
+

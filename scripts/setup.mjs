@@ -1,0 +1,31 @@
+import fs from "node:fs/promises";
+import path from "node:path";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+const exec = promisify(execFile);
+
+const root = process.cwd();
+const target = path.join(root, ".codex-claude.json");
+try {
+  await fs.access(target);
+  console.log(`保留现有配置: ${target}`);
+} catch {
+  await fs.copyFile(path.join(root, ".codex-claude.example.json"), target);
+  console.log(`已创建配置: ${target}`);
+}
+
+try {
+  const result = await exec("claude", ["--version"], { timeout: 10000 });
+  console.log(`Claude CLI 已连接: ${`${result.stdout}${result.stderr}`.trim()}`);
+} catch (error) {
+  console.warn(`Claude CLI 尚不可用: ${error.message}`);
+  console.warn("安装或修复 PATH 后重新执行 npm run setup。");
+}
+
+try {
+  const result = await exec("git", ["rev-parse", "--show-toplevel"], { cwd: root, timeout: 10000 });
+  console.log(`Git 工作区: ${result.stdout.trim()}`);
+} catch {
+  console.warn("当前目录不是 Git 仓库；Claude 隔离 worktree 功能需要 Git。");
+}
+

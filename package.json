@@ -1,0 +1,19 @@
+{
+  "name": "codex-claude-orchestrator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Native Codex plugin that orchestrates Codex and Claude CLI in isolated worktrees.",
+  "license": "MIT",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node src/mcp-server.js",
+    "test": "node --test",
+    "check": "node scripts/validate.mjs",
+    "setup": "node scripts/setup.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.0"
+  }
+}
+

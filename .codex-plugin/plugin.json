@@ -1,0 +1,32 @@
+{
+  "name": "codex-claude-orchestrator",
+  "version": "0.1.0",
+  "description": "让 Codex 编排 Claude CLI 并行执行任务，在隔离 worktree 中协作、回归和安全合并。",
+  "author": {
+    "name": "Hydite",
+    "url": "https://github.com/Hydite"
+  },
+  "homepage": "https://github.com/Hydite/codex-claude-orchestrator",
+  "repository": "https://github.com/Hydite/codex-claude-orchestrator",
+  "license": "MIT",
+  "keywords": ["codex", "claude", "orchestration", "agents", "worktree", "regression"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Codex × Claude Orchestrator",
+    "shortDescription": "并行编排 Codex 与 Claude CLI，实时检测冲突和回归",
+    "longDescription": "在 Codex 中创建目标、节点和 Agent，把边界清晰的子任务交给 Claude CLI 的隔离 Git worktree 执行。插件持续记录事件、文件占用、测试和合并状态，并提供可视化运行面板。",
+    "developerName": "Hydite",
+    "category": "Developer Tools",
+    "capabilities": ["Interactive", "Read", "Write"],
+    "websiteURL": "https://github.com/Hydite/codex-claude-orchestrator",
+    "defaultPrompt": [
+      "检查 Claude CLI 状态并创建一个并行开发任务",
+      "把当前目标拆成可安全并行的 Claude 节点",
+      "查看运行面板、冲突预警和回归测试结果"
+    ],
+    "brandColor": "#D97757",
+    "screenshots": []
+  }
+}
+

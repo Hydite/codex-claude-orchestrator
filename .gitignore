@@ -1,0 +1,9 @@
+node_modules/
+.DS_Store
+.codex-claude.json
+.codex-claude/state.json
+.codex-claude/logs/
+.codex-claude/worktrees/
+.codex-claude/*.lock
+dist/
+coverage/
