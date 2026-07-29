@@ -12,6 +12,10 @@ test("React control plane bundles the Devin-style board and MCP bridge", async (
   assert.match(html, /Running/);
   assert.match(html, /Blocked/);
   assert.match(html, /Ready/);
+  assert.match(app, />Board</);
+  assert.match(app, />List</);
+  assert.doesNotMatch(html, /app-chrome/);
+  assert.doesNotMatch(app, /app-chrome/);
   assert.match(app, /orchestrator_get_next_actions/);
   assert.match(app, /orchestrator_request_handoff/);
   assert.match(app, /sendMessage/);

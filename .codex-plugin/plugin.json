@@ -1,6 +1,6 @@
 {
   "name": "codex-claude-orchestrator",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "让 Codex、原生 subagent 与 Claude CLI 组成动态软件团队，支持约束采集、契约对齐、并行开发、检查点、移交和安全合并。",
   "author": {
     "name": "Hydite",

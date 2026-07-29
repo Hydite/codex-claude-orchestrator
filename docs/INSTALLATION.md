@@ -84,8 +84,8 @@ npm test
 npm run build:ui
 npm run build:marketplace
 npm run build:official
-git tag v0.3.0
-git push origin v0.3.0
+git tag v0.3.1
+git push origin v0.3.1
 ```
 
 ## Security notes

@@ -260,11 +260,6 @@ function App() {
   const agentFilters = ["any", "codex", "claude", "alignment"];
   const columns = [{ key: "running", title: "Running", count: groups.running.length }, { key: "blocked", title: "Blocked", count: groups.blocked.length }, { key: "ready", title: "Ready", count: groups.ready.length + setupTasks.length }];
   return <main className="devin-shell">
-    <header className="app-chrome">
-      <div className="chrome-left"><span className="traffic red" /><span className="traffic yellow" /><span className="traffic green" /><div className="product-switch"><b>Agent</b><span>Editor</span></div><span className="chrome-icon">⌕</span><span className="chrome-icon">▥</span></div>
-      <div className="chrome-search">← &nbsp; → <span>⌕&nbsp; Search sessions...</span></div>
-      <div className="chrome-right"><span>▣</span><span>◫</span><span className={`connection-dot ${status?.claude?.connected ? "online" : ""}`} /><b className="avatar">CX</b></div>
-    </header>
     <section className="board-toolbar"><div className="view-toggle"><button className={view === "board" ? "selected" : ""} onClick={() => setView("board")}>Board</button><button className={view === "list" ? "selected" : ""} onClick={() => setView("list")}>List</button></div><div className="toolbar-spacer" /><label className="session-search"><span>⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search sessions..." /></label><button onClick={() => setShowEvents((value) => !value)}>Display⌄</button></section>
     <section className="filter-row"><button className="filter-chip">◷&nbsp; Time is&nbsp; <b>Any time</b>&nbsp; ×</button><button className="filter-chip">▤&nbsp; Archived is&nbsp; <b>Excluded</b>&nbsp; ×</button><button className="filter-chip" onClick={() => setAgentFilter(agentFilters[(agentFilters.indexOf(agentFilter) + 1) % agentFilters.length])}>◎&nbsp; Agent is&nbsp; <b>{agentFilter}</b></button><button className="add-filter" onClick={() => setModal({ type: "task" })}>＋</button><span className={`gateway-pill ${status?.claude?.connected ? "online" : ""}`}>Claude {provider}</span></section>
     {notice && <div className={`notice ${notice.error ? "error" : ""}`}><span>{notice.text}</span><button className="icon" onClick={() => setNotice(null)}>×</button></div>}
