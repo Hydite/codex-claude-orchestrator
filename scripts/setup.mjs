@@ -16,7 +16,10 @@ try {
 
 try {
   const result = await exec("claude", ["--version"], { timeout: 10000 });
-  console.log(`Claude CLI 已连接: ${`${result.stdout}${result.stderr}`.trim()}`);
+  const auth = await exec("claude", ["auth", "status", "--json"], { timeout: 10000 });
+  const status = JSON.parse(auth.stdout);
+  console.log(`Claude CLI 已安装: ${`${result.stdout}${result.stderr}`.trim()}`);
+  console.log(status.loggedIn ? `Claude 登录已就绪: ${status.authMethod || "unknown"}` : "Claude CLI 尚未登录");
 } catch (error) {
   console.warn(`Claude CLI 尚不可用: ${error.message}`);
   console.warn("安装或修复 PATH 后重新执行 npm run setup。");
@@ -28,4 +31,3 @@ try {
 } catch {
   console.warn("当前目录不是 Git 仓库；Claude 隔离 worktree 功能需要 Git。");
 }
-

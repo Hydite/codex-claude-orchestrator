@@ -1,6 +1,6 @@
 {
   "claudeCommand": "claude",
-  "claudeArgs": ["-p", "{prompt}", "--output-format", "stream-json"],
+  "claudeArgs": ["-p", "{prompt}", "--output-format", "stream-json", "--verbose", "--include-partial-messages", "--permission-mode", "auto", "--no-session-persistence"],
   "autoStartClaude": true,
   "autoStartService": false,
   "serviceCommand": null,
@@ -8,6 +8,6 @@
   "stateFile": ".codex-claude/state.json",
   "validationCommands": ["git diff --check"],
   "maxConcurrentNodes": 2,
+  "cleanupWorktreeOnMerge": true,
   "taskTimeoutMs": 3600000
 }
-

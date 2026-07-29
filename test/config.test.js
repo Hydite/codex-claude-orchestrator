@@ -20,3 +20,8 @@ test("loadConfig merges project overrides", async () => {
   assert.equal(config.claudeCommand, "claude");
 });
 
+test("loadConfig rejects unsafe state paths and invalid concurrency", async () => {
+  const cwd = await fs.mkdtemp(path.join(os.tmpdir(), "cco-config-"));
+  await fs.writeFile(path.join(cwd, ".codex-claude.json"), JSON.stringify({ stateFile: "../state.json", maxConcurrentNodes: 0 }));
+  await assert.rejects(loadConfig(cwd), /配置无效/);
+});

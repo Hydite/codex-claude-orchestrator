@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { Orchestrator } from "../src/orchestrator.js";
+import { Orchestrator, deriveTaskStatus, fileMatchesScope, scopesOverlap, validateTaskGraph } from "../src/orchestrator.js";
 import { DEFAULT_CONFIG } from "../src/config.js";
 
 async function create() {
@@ -27,3 +27,21 @@ test("rejects overlapping file reservations", async () => {
   await assert.rejects(orchestrator.reserve(second.nodes[0], second.id), /冲突/);
 });
 
+test("directory scopes match files and overlap nested scopes", () => {
+  assert.equal(fileMatchesScope("src/api/client.js", "src/api/"), true);
+  assert.equal(fileMatchesScope("src/ui/client.js", "src/api/"), false);
+  assert.equal(scopesOverlap("src/api/", "src/api/client.js"), true);
+  assert.equal(scopesOverlap("src/api/", "src/ui/"), false);
+});
+
+test("task status keeps running while any parallel node is active", () => {
+  assert.equal(deriveTaskStatus([{ status: "review" }, { status: "running" }]), "running");
+  assert.equal(deriveTaskStatus([{ status: "merged" }, { status: "passed" }]), "completed");
+  assert.equal(deriveTaskStatus([{ status: "review" }, { status: "planned" }]), "review");
+});
+
+test("task graph rejects missing and cyclic dependencies", () => {
+  assert.throws(() => validateTaskGraph([{ id: "a", dependencies: ["missing"] }]), /不存在/);
+  assert.throws(() => validateTaskGraph([{ id: "a", dependencies: ["b"] }, { id: "b", dependencies: ["a"] }]), /循环依赖/);
+  assert.equal(validateTaskGraph([{ id: "a", dependencies: [] }, { id: "b", dependencies: ["a"] }]), true);
+});

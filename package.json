@@ -12,8 +12,7 @@
     "check": "node scripts/validate.mjs",
     "setup": "node scripts/setup.mjs"
   },
-  "dependencies": {
+  "devDependencies": {
     "@modelcontextprotocol/sdk": "^1.17.0"
   }
 }
-

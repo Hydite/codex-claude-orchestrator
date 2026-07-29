@@ -6,7 +6,7 @@ const root = process.cwd();
 const required = [
   ".codex-plugin/plugin.json", ".mcp.json", "package.json",
   "skills/codex-claude-orchestrator/SKILL.md", "src/mcp-server.js",
-  "src/orchestrator.js", "src/ui/widget.html", "README.md", "docs/DEVELOPMENT.md"
+  "src/orchestrator.js", "src/ui/widget.html", "assets/logo.svg", "README.md", "docs/DEVELOPMENT.md"
 ];
 const errors = [];
 for (const file of required) {
@@ -33,4 +33,3 @@ if (errors.length) {
   process.exit(1);
 }
 console.log(`✓ 插件结构、JSON、版本和 JavaScript 语法检查通过（${required.length} 个必需文件）`);
-

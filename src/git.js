@@ -26,7 +26,16 @@ export async function currentCommit(cwd) {
 }
 
 export async function changedFiles(cwd, base = null) {
-  const args = base ? ["diff", "--name-only", `${base}...HEAD`] : ["status", "--short"];
-  return lines((await gitOrThrow(cwd, args)).stdout).map((line) => line.replace(/^\s*[MADRCU?]+\s+/, "").trim());
+  const files = new Set();
+  const commands = base
+    ? [["diff", "--name-only", `${base}...HEAD`], ["diff", "--name-only"], ["diff", "--name-only", "--cached"], ["ls-files", "--others", "--exclude-standard"]]
+    : [["status", "--porcelain=v1"]];
+  for (const args of commands) {
+    const result = await gitOrThrow(cwd, args);
+    for (const line of lines(result.stdout)) {
+      const value = args[0] === "status" ? line.slice(3).replace(/^.* -> /, "") : line;
+      if (value) files.add(value.trim());
+    }
+  }
+  return [...files].sort();
 }
-

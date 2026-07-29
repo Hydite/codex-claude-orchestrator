@@ -26,7 +26,8 @@
       "查看运行面板、冲突预警和回归测试结果"
     ],
     "brandColor": "#D97757",
-    "screenshots": []
+    "composerIcon": "./assets/logo.svg",
+    "logo": "./assets/logo.svg",
+    "screenshots": ["./assets/dashboard-preview.png"]
   }
 }
-

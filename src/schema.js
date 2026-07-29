@@ -16,16 +16,21 @@ export function normalizeNode(input = {}) {
     goal: String(input.goal || ""),
     input: input.input ?? {},
     files: Array.isArray(input.files) ? input.files.map(String) : [],
+    requiresChanges: input.requiresChanges !== false,
+    attempts: Number(input.attempts || 0),
     agent: input.agent || "claude",
+    role: String(input.role || (input.agent === "codex" ? "coordinator" : "implementation")),
+    tools: Array.isArray(input.tools) ? input.tools.map(String) : [],
+    model: input.model ? String(input.model) : null,
     status: input.status || "planned",
     dependencies: Array.isArray(input.dependencies) ? input.dependencies.map(String) : [],
     baseCommit: input.baseCommit || null,
     branch: input.branch || null,
     worktree: input.worktree || null,
     result: input.result || null,
+    history: Array.isArray(input.history) ? input.history : [],
     validation: input.validation || null,
     createdAt: input.createdAt || now(),
     updatedAt: now()
   };
 }
-
