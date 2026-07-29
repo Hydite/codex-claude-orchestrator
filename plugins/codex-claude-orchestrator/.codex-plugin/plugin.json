@@ -1,0 +1,36 @@
+{
+  "name": "codex-claude-orchestrator",
+  "version": "0.3.3",
+  "description": "Coordinate Codex, native subagents, and Claude CLI as a parallel software team with constraints, contract alignment, checkpoints, handoffs, regression gates, and reviewed merges.",
+  "author": {
+    "name": "Hydite",
+    "email": "hydite@users.noreply.github.com",
+    "url": "https://github.com/Hydite"
+  },
+  "homepage": "https://github.com/Hydite/codex-claude-orchestrator",
+  "repository": "https://github.com/Hydite/codex-claude-orchestrator",
+  "license": "MIT",
+  "keywords": ["codex", "claude", "orchestration", "agents", "worktree", "regression"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Codex × Claude Orchestrator",
+    "shortDescription": "Open a live control plane for parallel Codex and Claude teams",
+    "longDescription": "Open a live React control plane where Codex coordinates native subagents and Claude CLI across parallel responsibilities. The plugin captures shared and per-agent constraints, contract alignment, file reservations, checkpoints, handoffs, regression gates, validation, review, and explicit merge decisions.",
+    "developerName": "Hydite",
+    "category": "Developer Tools",
+    "capabilities": ["Interactive", "Read", "Write"],
+    "websiteURL": "https://github.com/Hydite/codex-claude-orchestrator",
+    "privacyPolicyURL": "https://github.com/Hydite/codex-claude-orchestrator/blob/dev/docs/PRIVACY.md",
+    "termsOfServiceURL": "https://github.com/Hydite/codex-claude-orchestrator/blob/dev/docs/TERMS.md",
+    "defaultPrompt": [
+      "Open the team control plane to plan Codex, native subagent, Claude, and contract-alignment responsibilities.",
+      "Start parallel Codex and Claude work with per-agent constraints, file boundaries, checkpoints, and safe handoffs.",
+      "Open the control plane to review Running, Blocked, Ready, validation, regression, and merge status."
+    ],
+    "brandColor": "#D97757",
+    "composerIcon": "./assets/logo.svg",
+    "logo": "./assets/logo.svg",
+    "screenshots": ["./assets/dashboard-preview.png"]
+  }
+}

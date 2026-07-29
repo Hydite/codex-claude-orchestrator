@@ -1,0 +1,14 @@
+{
+  "name": "codex-claude-orchestrator",
+  "version": "0.3.3",
+  "private": true,
+  "type": "module",
+  "description": "Coordinate Codex, native subagents, and Claude CLI as a parallel software team with constraints, contract alignment, checkpoints, handoffs, regression gates, and reviewed merges.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/mcp-server.js"
+  }
+}

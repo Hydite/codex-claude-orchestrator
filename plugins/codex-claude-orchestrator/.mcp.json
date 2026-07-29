@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "codex-claude-orchestrator": {
+      "cwd": ".",
+      "command": "node",
+      "args": ["./src/mcp-server.js"]
+    }
+  }
+}
+

@@ -1,0 +1,16 @@
+{
+  "claudeCommand": "claude",
+  "claudeArgs": ["-p", "{prompt}", "--output-format", "stream-json", "--verbose", "--include-partial-messages", "--permission-mode", "auto", "--no-session-persistence"],
+  "claudeEnvironmentSource": "auto",
+  "claudeSettingsPath": "~/.claude/settings.json",
+  "autoStartClaude": true,
+  "autoStartService": false,
+  "serviceCommand": null,
+  "worktreeRoot": ".codex-claude/worktrees",
+  "stateFile": ".codex-claude/state.json",
+  "validationCommands": ["git diff --check"],
+  "maxConcurrentNodes": 2,
+  "checkpointIntervalSeconds": 120,
+  "cleanupWorktreeOnMerge": true,
+  "taskTimeoutMs": 3600000
+}
