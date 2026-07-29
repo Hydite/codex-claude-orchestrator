@@ -18,6 +18,13 @@ test("buildMarketplace creates an installable standard marketplace tree", async 
   const manifest = await readJson(path.join(output, "plugins", PLUGIN_NAME, ".codex-plugin/plugin.json"));
   assert.equal(manifest.name, PLUGIN_NAME);
   await fs.access(path.join(output, "plugins", PLUGIN_NAME, "src/mcp-server.js"));
+  for (const readme of ["README.md", "README.en.md", "README.ja.md", "README.ko.md"]) {
+    await fs.access(path.join(output, "plugins", PLUGIN_NAME, readme));
+  }
+  await fs.access(path.join(output, "plugins", PLUGIN_NAME, "docs/images/dashboard-board.jpg"));
+  await fs.access(path.join(output, "plugins", PLUGIN_NAME, "docs/images/dashboard-running.jpg"));
+  await fs.access(path.join(output, "plugins", PLUGIN_NAME, "docs/images/dashboard-blocked.jpg"));
+  await fs.access(path.join(output, "plugins", PLUGIN_NAME, "docs/images/dashboard-ready.jpg"));
   await assert.rejects(fs.access(path.join(output, "plugins", PLUGIN_NAME, "test")));
   await assert.rejects(fs.access(path.join(output, "plugins", PLUGIN_NAME, "node_modules")));
 });

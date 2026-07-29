@@ -16,7 +16,10 @@ const COPY_ENTRIES = [
   "skills",
   "src",
   "LICENSE",
-  "README.md"
+  "README.md",
+  "README.en.md",
+  "README.ja.md",
+  "README.ko.md"
 ];
 
 export async function readJson(file) {
