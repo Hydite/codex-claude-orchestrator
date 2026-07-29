@@ -48,7 +48,7 @@ async function handleRequest(request) {
     return {
       protocolVersion: request.params?.protocolVersion || "2025-06-18",
       capabilities: { tools: { listChanged: false }, resources: { subscribe: false, listChanged: false } },
-      serverInfo: { name: "codex-claude-orchestrator", version: "0.3.2" }
+      serverInfo: { name: "codex-claude-orchestrator", version: "0.3.3" }
     };
   }
   if (request.method === "ping") return {};
@@ -66,7 +66,7 @@ async function handleRequest(request) {
         text: await fs.readFile(widgetPath, "utf8"),
         _meta: {
           ui: { prefersBorder: true, csp: { connectDomains: [], resourceDomains: [] } },
-          "openai/widgetDescription": "Codex、原生 subagent 与 Claude CLI 的动态团队控制面"
+          "openai/widgetDescription": "Live control plane for parallel Codex, native subagent, and Claude CLI teams"
         }
       }]
     };

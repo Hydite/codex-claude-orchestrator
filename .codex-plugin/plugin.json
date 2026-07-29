@@ -1,7 +1,7 @@
 {
   "name": "codex-claude-orchestrator",
-  "version": "0.3.2",
-  "description": "让 Codex、原生 subagent 与 Claude CLI 组成动态软件团队，支持约束采集、契约对齐、并行开发、检查点、移交和安全合并。",
+  "version": "0.3.3",
+  "description": "Coordinate Codex, native subagents, and Claude CLI as a parallel software team with constraints, contract alignment, checkpoints, handoffs, regression gates, and reviewed merges.",
   "author": {
     "name": "Hydite",
     "email": "hydite@users.noreply.github.com",
@@ -15,8 +15,8 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Codex × Claude Orchestrator",
-    "shortDescription": "动态组建 Codex、subagent 与 Claude 的并行开发团队",
-    "longDescription": "Codex 根据能力、风险、依赖和文件边界动态分配开发与契约对齐职责，同时让 Codex 原生 subagent 和 Claude CLI 并行工作。插件记录约束、预约、检查点、越界移交、回归审查和最终合并，并提供 Devin 风格的 React 控制面。",
+    "shortDescription": "Open a live control plane for parallel Codex and Claude teams",
+    "longDescription": "Open a live React control plane where Codex coordinates native subagents and Claude CLI across parallel responsibilities. The plugin captures shared and per-agent constraints, contract alignment, file reservations, checkpoints, handoffs, regression gates, validation, review, and explicit merge decisions.",
     "developerName": "Hydite",
     "category": "Developer Tools",
     "capabilities": ["Interactive", "Read", "Write"],
@@ -24,9 +24,9 @@
     "privacyPolicyURL": "https://github.com/Hydite/codex-claude-orchestrator/blob/dev/docs/PRIVACY.md",
     "termsOfServiceURL": "https://github.com/Hydite/codex-claude-orchestrator/blob/dev/docs/TERMS.md",
     "defaultPrompt": [
-      "先询问并写入团队约束，再动态创建 Codex、subagent、Claude 和契约对齐职责",
-      "让 Codex 与 Claude 同时开发不同边界，并在检查点处理移交和接口变更",
-      "打开 Devin 风格团队看板，查看 Running、Blocked、Ready 和回归审查状态"
+      "Open the team control plane to plan Codex, native subagent, Claude, and contract-alignment responsibilities.",
+      "Start parallel Codex and Claude work with per-agent constraints, file boundaries, checkpoints, and safe handoffs.",
+      "Open the control plane to review Running, Blocked, Ready, validation, regression, and merge status."
     ],
     "brandColor": "#D97757",
     "composerIcon": "./assets/logo.svg",

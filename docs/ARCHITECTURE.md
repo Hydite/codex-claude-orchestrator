@@ -12,7 +12,7 @@ Codex is technical lead, developer, reviewer, and final integrator. It may imple
 4. **Orchestrator core** owns task goals, agents, dependencies, reservations, lifecycle rules, next-action derivation, lineage, and event persistence.
 5. **Claude runtime** resolves the effective Gateway environment, detects the CLI, optionally starts a configured service, creates a branch/worktree, streams process output, and records completion.
 6. **Regression gate** executes configured validation commands, compares changed files with the node allowlist, and checks overlap with active/review nodes.
-7. **React MCP App** renders a Devin-style status board, constraint intake, team operations, handoffs, and review queues. It calls the same tools and is never the scheduler.
+7. **React MCP App** renders the live team control plane with status lanes, constraint intake, team operations, handoffs, and review queues. It calls the same tools and is never the scheduler.
 8. **Distribution layer** builds dependency-free plugin bundles for the personal marketplace, Hydite Git marketplace, and OpenAI curated submission layout.
 
 ## State and data flow

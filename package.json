@@ -1,6 +1,6 @@
 {
   "name": "codex-claude-orchestrator",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "private": true,
   "type": "module",
   "description": "Native Codex plugin that coordinates Codex, native subagents, and Claude CLI as a dynamic software team.",

@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 
-test("React control plane bundles the Devin-style board and MCP bridge", async () => {
+test("React control plane bundles the team status board and MCP bridge", async () => {
   const [html, app, bridge] = await Promise.all([
     fs.readFile(new URL("../src/ui/widget.html", import.meta.url), "utf8"),
     fs.readFile(new URL("../ui/app.jsx", import.meta.url), "utf8"),
