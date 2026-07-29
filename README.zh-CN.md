@@ -21,7 +21,7 @@
 
 ## 最新控制面
 
-控制面是 React MCP App，直接在 Codex 右侧预览区打开，当前任务从 `Board / List` 开始，不再显示模拟的 `Agent / Editor` 顶栏。
+React MCP 控制面通过 Board 和 List 两种视图展示实时团队状态，提供 Running、Blocked、Ready 分栏、搜索与 Agent 筛选、Gateway 连接状态、任务与约束设置、检查点进度、越界移交、重新分配、验证、审查和合并操作。
 
 ![完整 Board 看板](./docs/images/dashboard-board.jpg)
 

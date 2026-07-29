@@ -21,7 +21,7 @@ Codex のメインスレッド、ネイティブ Codex subagent、Claude CLI を
 
 ## 最新のコントロールプレーン
 
-React MCP App は Codex の右側プレビュー領域で開きます。現在のタスクは `Board / List` から始まり、模擬的な `Agent / Editor` アプリバーは削除されています。
+React MCP コントロールプレーンは、Board と List の両方でチームの状態をリアルタイム表示します。Running、Blocked、Ready レーン、検索と Agent フィルター、Gateway 接続状態、タスクと制約の設定、チェックポイント進捗、境界違反の引き継ぎ、再割り当て、検証、レビュー、マージ操作を提供します。
 
 ![Board 全体](./docs/images/dashboard-board.jpg)
 

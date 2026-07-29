@@ -21,7 +21,7 @@ Codex 메인 스레드, 네이티브 Codex subagent, Claude CLI를 회귀 게이
 
 ## 최신 컨트롤 플레인
 
-React MCP App은 Codex 오른쪽 미리보기 영역에서 열립니다. 현재 작업은 `Board / List`에서 바로 시작하며, 가짜 `Agent / Editor` 애플리케이션 바는 제거되었습니다.
+React MCP 컨트롤 플레인은 Board와 List 뷰에서 팀 상태를 실시간으로 보여 줍니다. Running, Blocked, Ready 레인, 검색과 Agent 필터, Gateway 연결 상태, 작업 및 제약 설정, 체크포인트 진행률, 경계 위반 인계, 재배정, 검증, 리뷰, 병합 작업을 제공합니다.
 
 ![전체 Board](./docs/images/dashboard-board.jpg)
 

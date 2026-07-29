@@ -21,7 +21,7 @@ The plugin puts Codex, native Codex subagents, Claude CLI, and contract-alignmen
 
 ## Latest control plane
 
-The React MCP App opens in Codex's right-side preview area. The current task starts directly at `Board / List`; the simulated `Agent / Editor` application chrome has been removed.
+The React MCP control plane presents live team state through Board and List views. It provides Running, Blocked, and Ready lanes, search and agent filters, Gateway connectivity, task and constraint setup, checkpoint progress, boundary handoffs, reassignment, validation, review, and merge actions.
 
 ![Full Board](./docs/images/dashboard-board.jpg)
 
