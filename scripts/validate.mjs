@@ -5,10 +5,10 @@ import { spawnSync } from "node:child_process";
 const root = process.cwd();
 const required = [
   ".codex-plugin/plugin.json", ".mcp.json", "package.json",
-  "skills/codex-claude-orchestrator/SKILL.md", "src/mcp-server.js",
-  "src/orchestrator.js", "src/ui/widget.html", "assets/logo.svg", "README.md", "docs/DEVELOPMENT.md",
+  "skills/codex-claude-orchestrator/SKILL.md", "ui/app.jsx", "src/ui/widget.html", "src/mcp-server.js",
+  "src/orchestrator.js", "assets/logo.svg", "README.md", "docs/DEVELOPMENT.md",
   "docs/INSTALLATION.md", "scripts/install-personal.mjs", "scripts/install-marketplace.mjs",
-  "scripts/install-official.mjs", "scripts/build-marketplace.mjs"
+  "scripts/install-official.mjs", "scripts/build-marketplace.mjs", "scripts/build-ui.mjs"
 ];
 const errors = [];
 for (const file of required) {
@@ -37,10 +37,20 @@ async function collectScripts(directory) {
   return files;
 }
 
-const syntaxFiles = ["src/mcp-server.js", "src/orchestrator.js", "src/claude-runtime.js", "src/state-store.js", ...await collectScripts(path.join(root, "scripts"))];
+const syntaxFiles = ["src/mcp-server.js", "src/orchestrator.js", "src/schema.js", "src/tool-definitions.js", "src/claude-runtime.js", "src/state-store.js", ...await collectScripts(path.join(root, "scripts"))];
 for (const file of syntaxFiles) {
   const check = spawnSync(process.execPath, ["--check", path.join(root, file)], { encoding: "utf8" });
   if (check.status !== 0) errors.push(`${file} 语法检查失败: ${check.stderr}`);
+}
+
+const widget = await fs.readFile(path.join(root, "src/ui/widget.html"), "utf8");
+if (!widget.includes("Codex × Claude Control Plane") || !widget.includes("Running") || !widget.includes("Blocked") || !widget.includes("Ready")) errors.push("React MCP App 产物缺少看板标记；请先运行 npm run build:ui");
+const runtimeFiles = ["src/mcp-server.js", "src/orchestrator.js", "src/schema.js", "src/tool-definitions.js", "src/claude-runtime.js", "src/config.js", "src/git.js", "src/state-store.js"];
+for (const file of runtimeFiles) {
+  const source = await fs.readFile(path.join(root, file), "utf8");
+  for (const match of source.matchAll(/from\s+["']([^"']+)["']/g)) {
+    if (!match[1].startsWith("node:") && !match[1].startsWith(".")) errors.push(`${file} 引入了非 Node 内置/本地运行时依赖: ${match[1]}`);
+  }
 }
 
 if (errors.length) {

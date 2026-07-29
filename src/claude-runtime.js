@@ -114,6 +114,8 @@ export class ClaudeRuntime {
       `你是 Claude 执行 Agent。任务目标：${task.goal}`,
       `节点目标：${node.goal}`,
       `职责角色：${node.role}`,
+      `Codex 分配理由：${node.assignment?.rationale || "未提供"}`,
+      `本节点约束：${node.constraints?.length ? node.constraints.join("；") : "无额外约束"}`,
       `节点结构化输入：${JSON.stringify(node.input)}`,
       `可用工具策略：${node.tools.length ? node.tools.join(", ") : "使用 Claude 默认工具策略"}`,
       `允许修改的文件范围：${node.files.length ? node.files.join(", ") : "由你判断，但必须在完成事件中列出变更"}`,

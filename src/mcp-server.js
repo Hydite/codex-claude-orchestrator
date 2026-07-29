@@ -21,9 +21,19 @@ async function callTool(name, args = {}) {
   }
   if (name === "claude_status") return orchestrator.status(args);
   if (name === "orchestrator_get_state") return orchestrator.snapshot();
+  if (name === "orchestrator_open_dashboard") return orchestrator.snapshot();
   if (name === "orchestrator_create_task") return orchestrator.createTask(args);
+  if (name === "orchestrator_set_constraints") return orchestrator.setConstraints(args);
   if (name === "orchestrator_add_node") return orchestrator.addNode(args);
+  if (name === "orchestrator_assign_node") return orchestrator.assignNode(args);
+  if (name === "orchestrator_start_codex_node") return orchestrator.startCodexNode(args);
   if (name === "orchestrator_dispatch_node") return orchestrator.dispatchNode(args);
+  if (name === "orchestrator_checkpoint_node") return orchestrator.checkpointNode(args);
+  if (name === "orchestrator_request_handoff") return orchestrator.requestHandoff(args);
+  if (name === "orchestrator_reassign_node") return orchestrator.reassignNode(args);
+  if (name === "orchestrator_finish_codex_node") return orchestrator.finishCodexNode(args);
+  if (name === "orchestrator_review_codex_node") return orchestrator.reviewCodexNode(args);
+  if (name === "orchestrator_get_next_actions") return orchestrator.getNextActions();
   if (name === "orchestrator_validate_node") return orchestrator.validateNode(args);
   if (name === "orchestrator_merge_node") return orchestrator.mergeNode(args);
   if (name === "orchestrator_record_codex_progress") return orchestrator.recordCodexProgress(args);
@@ -37,13 +47,13 @@ async function handleRequest(request) {
     return {
       protocolVersion: request.params?.protocolVersion || "2025-06-18",
       capabilities: { tools: { listChanged: false }, resources: { subscribe: false, listChanged: false } },
-      serverInfo: { name: "codex-claude-orchestrator", version: "0.2.1" }
+      serverInfo: { name: "codex-claude-orchestrator", version: "0.3.0" }
     };
   }
   if (request.method === "ping") return {};
   if (request.method === "tools/list") return { tools };
   if (request.method === "resources/list") {
-    return { resources: [{ uri: WIDGET_URI, name: "Orchestrator Dashboard", description: "Live Codex × Claude task graph", mimeType: "text/html;profile=mcp-app" }] };
+    return { resources: [{ uri: WIDGET_URI, name: "Hybrid Team Control Plane", description: "React control plane for the live Codex × Claude team", mimeType: "text/html;profile=mcp-app" }] };
   }
   if (request.method === "resources/read") {
     if (request.params?.uri !== WIDGET_URI) throw Object.assign(new Error("Unknown resource"), { code: -32002 });
@@ -54,7 +64,7 @@ async function handleRequest(request) {
         text: await fs.readFile(widgetPath, "utf8"),
         _meta: {
           ui: { prefersBorder: true, csp: { connectDomains: [], resourceDomains: [] } },
-          "openai/widgetDescription": "Codex 与 Claude CLI 的实时任务、节点、冲突和回归状态面板"
+          "openai/widgetDescription": "Codex、原生 subagent 与 Claude CLI 的动态团队控制面"
         }
       }]
     };
@@ -65,7 +75,7 @@ async function handleRequest(request) {
       return {
         content: [{ type: "text", text: JSON.stringify(result, null, 2) }],
         structuredContent: result,
-        _meta: { "ui.resourceUri": WIDGET_URI }
+        ...(request.params?.name === "orchestrator_open_dashboard" ? { _meta: { "ui.resourceUri": WIDGET_URI, "openai/outputTemplate": WIDGET_URI } } : {})
       };
     } catch (error) {
       return { isError: true, content: [{ type: "text", text: error.message }] };

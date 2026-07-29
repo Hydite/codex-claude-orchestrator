@@ -1,7 +1,7 @@
 {
   "name": "codex-claude-orchestrator",
-  "version": "0.2.1",
-  "description": "让 Codex 编排 Claude CLI 并行执行任务，在隔离 worktree 中协作、回归和安全合并。",
+  "version": "0.3.0",
+  "description": "让 Codex、原生 subagent 与 Claude CLI 组成动态软件团队，支持约束采集、契约对齐、并行开发、检查点、移交和安全合并。",
   "author": {
     "name": "Hydite",
     "email": "hydite@users.noreply.github.com",
@@ -15,8 +15,8 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Codex × Claude Orchestrator",
-    "shortDescription": "并行编排 Codex 与 Claude CLI，实时检测冲突和回归",
-    "longDescription": "在 Codex 中创建目标、节点和 Agent，把边界清晰的子任务交给 Claude CLI 的隔离 Git worktree 执行。插件持续记录事件、文件占用、测试和合并状态，并提供可视化运行面板。",
+    "shortDescription": "动态组建 Codex、subagent 与 Claude 的并行开发团队",
+    "longDescription": "Codex 根据能力、风险、依赖和文件边界动态分配开发与契约对齐职责，同时让 Codex 原生 subagent 和 Claude CLI 并行工作。插件记录约束、预约、检查点、越界移交、回归审查和最终合并，并提供 Devin 风格的 React 控制面。",
     "developerName": "Hydite",
     "category": "Developer Tools",
     "capabilities": ["Interactive", "Read", "Write"],
@@ -24,9 +24,9 @@
     "privacyPolicyURL": "https://github.com/Hydite/codex-claude-orchestrator/blob/dev/docs/PRIVACY.md",
     "termsOfServiceURL": "https://github.com/Hydite/codex-claude-orchestrator/blob/dev/docs/TERMS.md",
     "defaultPrompt": [
-      "检查 Claude CLI 状态并创建一个并行开发任务",
-      "把当前目标拆成可安全并行的 Claude 节点",
-      "查看运行面板、冲突预警和回归测试结果"
+      "先询问并写入团队约束，再动态创建 Codex、subagent、Claude 和契约对齐职责",
+      "让 Codex 与 Claude 同时开发不同边界，并在检查点处理移交和接口变更",
+      "打开 Devin 风格团队看板，查看 Running、Blocked、Ready 和回归审查状态"
     ],
     "brandColor": "#D97757",
     "composerIcon": "./assets/logo.svg",

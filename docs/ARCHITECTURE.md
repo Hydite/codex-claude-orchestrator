@@ -2,37 +2,38 @@
 
 ## Product boundary
 
-Codex is the coordinator, reviewer, and final integrator. Claude CLI is an execution runtime for bounded nodes. The orchestrator does not let two agents directly share a mutable checkout.
+Codex is technical lead, developer, reviewer, and final integrator. It may implement in the main thread or delegate to native Codex subagents. Claude CLI is an isolated execution runtime for bounded nodes. The MCP server stores authoritative team state but never pretends it can spawn a native Codex subagent; the client skill owns that behavior.
 
 ## Components
 
 1. **Codex native plugin manifest** discovers the skill and local MCP server.
-2. **MCP server** exposes status, workspace binding, task graph, node dispatch, validation, progress, stop, and merge tools.
-3. **Orchestrator core** owns task goals, agents, dependencies, file reservations, lifecycle rules, and event persistence.
-4. **Claude runtime** resolves the effective Gateway environment, detects the CLI, optionally starts a configured service, creates a branch/worktree, streams process output, and records completion.
-5. **Regression gate** executes configured validation commands, compares changed files with the node allowlist, and checks overlap with active/review nodes.
-6. **MCP App dashboard** polls the authoritative state and renders tasks, nodes, events, availability, failures, and review queues.
-7. **Distribution layer** builds dependency-free plugin bundles for the personal marketplace, Hydite Git marketplace, and OpenAI curated submission layout.
+2. **Client skill** performs constraint intake, capability-based assignment, native subagent delegation, periodic team-loop decisions, handoffs, and reviewed integration.
+3. **MCP server** exposes recoverable state transitions for constraints, assignment, Codex start/finish/review, Claude dispatch, checkpoints, handoffs, validation, and merge.
+4. **Orchestrator core** owns task goals, agents, dependencies, reservations, lifecycle rules, next-action derivation, lineage, and event persistence.
+5. **Claude runtime** resolves the effective Gateway environment, detects the CLI, optionally starts a configured service, creates a branch/worktree, streams process output, and records completion.
+6. **Regression gate** executes configured validation commands, compares changed files with the node allowlist, and checks overlap with active/review nodes.
+7. **React MCP App** renders a Devin-style status board, constraint intake, team operations, handoffs, and review queues. It calls the same tools and is never the scheduler.
+8. **Distribution layer** builds dependency-free plugin bundles for the personal marketplace, Hydite Git marketplace, and OpenAI curated submission layout.
 
 ## State and data flow
 
 State is scoped to the active workspace and persisted in `.codex-claude/state.json`. A serialized mutation queue prevents concurrent stdout/stderr events from losing updates. The store retains the latest 500 events.
 
-Dispatch follows this sequence:
+Team execution follows this sequence:
 
-1. verify node dependencies and concurrency limit;
-2. reserve its file allowlist;
-3. resolve the allowlisted Claude Gateway environment, detect Claude CLI, and optionally launch the configured service command;
-4. create a branch and isolated Git worktree at the current commit;
-5. spawn Claude with a goal, structured node input, constraints, and file scope;
-6. stream events and logs;
-7. run regression, scope, and overlap checks;
-8. place the node in `review` only when the process and checks pass;
-9. require an explicit Codex merge call.
+1. collect or explicitly skip shared and per-agent constraints;
+2. let Codex assess capabilities and create non-overlapping nodes, adding alignment dependencies where contracts cross boundaries;
+3. reserve scopes and start every dependency-ready Codex and Claude node without waiting for independent work;
+4. run Claude in isolated worktrees while Codex works directly or through native subagents;
+5. record milestone checkpoints and derive overdue checks, handoffs, reviews, and dispatchable work through `get_next_actions`;
+6. stop and hand off boundary or capability failures with evidence and lineage;
+7. require separate completion and review transitions for Codex work;
+8. run regression, scope, overlap, and base checks for isolated work;
+9. require explicit Codex review and merge.
 
 ## Host UI compatibility
 
-The dashboard is registered as an MCP Apps resource using `text/html;profile=mcp-app` and attached to state/render tools through `_meta.ui.resourceUri`. Codex clients that support MCP App rendering can show it in the interactive visualization surface. The same tool surface remains usable without the widget.
+The React dashboard is built into a self-contained MCP Apps resource using `text/html;profile=mcp-app`. Only `orchestrator_open_dashboard` attaches `_meta.ui.resourceUri`; data and mutation calls stay headless so repeated lifecycle operations do not create duplicate inline panels. Host placement remains controlled by the Codex client.
 
 ## Distribution boundary
 

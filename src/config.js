@@ -13,6 +13,7 @@ export const DEFAULT_CONFIG = {
   stateFile: ".codex-claude/state.json",
   validationCommands: ["git diff --check"],
   maxConcurrentNodes: 2,
+  checkpointIntervalSeconds: 120,
   cleanupWorktreeOnMerge: true,
   taskTimeoutMs: 3600000
 };
@@ -25,6 +26,7 @@ export function validateConfig(config) {
   if (typeof config.claudeSettingsPath !== "string" || !config.claudeSettingsPath.trim()) errors.push("claudeSettingsPath 必须是非空字符串");
   if (!Array.isArray(config.validationCommands) || !config.validationCommands.every((command) => typeof command === "string" && command.trim())) errors.push("validationCommands 必须是非空字符串数组");
   if (!Number.isInteger(config.maxConcurrentNodes) || config.maxConcurrentNodes < 1 || config.maxConcurrentNodes > 16) errors.push("maxConcurrentNodes 必须是 1-16 的整数");
+  if (!Number.isInteger(config.checkpointIntervalSeconds) || config.checkpointIntervalSeconds < 15 || config.checkpointIntervalSeconds > 3600) errors.push("checkpointIntervalSeconds 必须是 15-3600 的整数");
   if (!Number.isInteger(config.taskTimeoutMs) || config.taskTimeoutMs < 1000) errors.push("taskTimeoutMs 必须是不小于 1000 的整数");
   if (config.serviceCommand !== null && (!Array.isArray(config.serviceCommand) || config.serviceCommand.length === 0 || !config.serviceCommand.every((arg) => typeof arg === "string" && arg.trim()))) errors.push("serviceCommand 必须是 null 或非空字符串数组");
   for (const key of ["worktreeRoot", "stateFile"]) {

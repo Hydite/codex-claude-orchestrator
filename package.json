@@ -1,17 +1,24 @@
 {
   "name": "codex-claude-orchestrator",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
-  "description": "Native Codex plugin that orchestrates Codex and Claude CLI in isolated worktrees.",
+  "description": "Native Codex plugin that coordinates Codex, native subagents, and Claude CLI as a dynamic software team.",
   "license": "MIT",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "start": "node src/mcp-server.js",
+    "build:ui": "node scripts/build-ui.mjs",
+    "pretest": "npm run build:ui",
     "test": "node --test --test-concurrency=1",
+    "precheck": "npm run build:ui",
     "check": "node scripts/validate.mjs",
     "setup": "node scripts/setup.mjs",
+    "prebuild:marketplace": "npm run build:ui",
     "build:marketplace": "node scripts/build-marketplace.mjs",
+    "prebuild:official": "npm run build:ui",
     "build:official": "node scripts/build-marketplace.mjs --mode official --output dist/openai-submission",
     "install:personal": "node scripts/install-personal.mjs install",
     "update:personal": "node scripts/install-personal.mjs update",
@@ -22,6 +29,9 @@
     "install:official": "node scripts/install-official.mjs install"
   },
   "devDependencies": {
-    "@modelcontextprotocol/sdk": "^1.17.0"
+    "@modelcontextprotocol/sdk": "^1.17.0",
+    "esbuild": "^0.28.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
   }
 }

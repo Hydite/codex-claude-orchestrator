@@ -58,7 +58,7 @@ npm run build:official
 
 The output under `dist/openai-submission` contains:
 
-- `plugins/codex-claude-orchestrator/` — the isolated plugin bundle;
+- `plugins/codex-claude-orchestrator/` — the isolated, dependency-free plugin bundle with the prebuilt React MCP App;
 - `.agents/plugins/marketplace.json` — a standalone validation marketplace;
 - `.agents/plugins/api_marketplace.json` — the API-key-login validation marketplace;
 - `marketplace-entry.json` and `api-marketplace-entry.json` — entries for both official catalog variants;
@@ -81,10 +81,11 @@ Recommended release sequence:
 ```bash
 npm run check
 npm test
+npm run build:ui
 npm run build:marketplace
 npm run build:official
-git tag v0.2.1
-git push origin v0.2.1
+git tag v0.3.0
+git push origin v0.3.0
 ```
 
 ## Security notes

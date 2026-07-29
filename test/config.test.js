@@ -31,3 +31,9 @@ test("loadConfig rejects unknown Claude environment source", async () => {
   await fs.writeFile(path.join(cwd, ".codex-claude.json"), JSON.stringify({ claudeEnvironmentSource: "oauth-only" }));
   await assert.rejects(loadConfig(cwd), /claudeEnvironmentSource/);
 });
+
+test("loadConfig rejects unsafe checkpoint intervals", async () => {
+  const cwd = await fs.mkdtemp(path.join(os.tmpdir(), "cco-config-"));
+  await fs.writeFile(path.join(cwd, ".codex-claude.json"), JSON.stringify({ checkpointIntervalSeconds: 5 }));
+  await assert.rejects(loadConfig(cwd), /checkpointIntervalSeconds/);
+});

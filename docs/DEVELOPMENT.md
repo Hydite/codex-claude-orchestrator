@@ -13,6 +13,9 @@
 - MCP tool inputs must use explicit JSON Schema. Mutating tools must have accurate annotations.
 - Never build a shell command from model-provided input. Claude is invoked with `spawn(command, args)`.
 - Never log, persist, or return Claude Gateway credential values. Environment-source changes require redaction and precedence tests.
+- The client skill owns native Codex subagent delegation and the team loop; the MCP server must expose recoverable atomic transitions rather than a long-running scheduler.
+- Every assignment must record agent, execution mode, rationale, capability evidence, constraints, dependencies, and file scope. Every handoff must preserve evidence and lineage.
+- The React control plane is built from development-only dependencies into a self-contained `src/ui/widget.html`; the distributed MCP runtime must not require React or a bundler to start.
 - Persist mutations through `StateStore.update`; do not write the state file from other modules.
 - Every lifecycle transition must emit a structured event.
 - A successful process exit is not acceptance. Scope, overlap, regression, and human/Codex review are all required.
